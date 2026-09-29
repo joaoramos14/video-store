@@ -1,14 +1,6 @@
 import type { Request, Response } from "express";
 import Genero from "../models/genero.js";
 
-function isValidUUID(value: string): boolean {
-    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
-}
-
-function isNonEmptyString(value: unknown): boolean {
-    return typeof value === "string" && value.trim().length > 0;
-}
-
 async function getAll(req: Request, res: Response) {
     try {
         const generos = await Genero.findAll();
@@ -23,8 +15,8 @@ async function getById(req: Request, res: Response) {
     try {
         const id = req.params.id as string;
 
-        if (!isValidUUID(id)) {
-            return res.status(400).json({ message: "ID inválido." });
+        if (!id) {
+            return res.status(400).json({ message: "ID do gênero não informado." });
         }
 
         const genero = await Genero.findById(id);
@@ -42,13 +34,13 @@ async function getById(req: Request, res: Response) {
 
 async function create(req: Request, res: Response) {
     try {
-        const { nome, descricao } = req.body;
+        const { nome } = req.body;
 
-        if (!isNonEmptyString(nome)) {
+        if (!nome) {
             return res.status(400).json({ message: "O campo 'nome' é obrigatório." });
         }
 
-        const novoGenero = await Genero.create({ nome, descricao });
+        const novoGenero = await Genero.create(req.body);
         return res.status(201).json(novoGenero);
     } catch (error) {
         console.error(error);
@@ -60,17 +52,11 @@ async function update(req: Request, res: Response) {
     try {
         const id = req.params.id as string;
 
-        if (!isValidUUID(id)) {
-            return res.status(400).json({ message: "ID inválido." });
+        if (!id) {
+            return res.status(400).json({ message: "ID do gênero não informado." });
         }
 
-        const { nome, descricao, ativo } = req.body;
-
-        if (nome !== undefined && !isNonEmptyString(nome)) {
-            return res.status(400).json({ message: "O campo 'nome' não pode ser vazio." });
-        }
-
-        const generoAtualizado = await Genero.update(id, { nome, descricao, ativo });
+        const generoAtualizado = await Genero.update(id, req.body);
 
         if (!generoAtualizado) {
             return res.status(404).json({ message: "Gênero não encontrado." });
@@ -87,8 +73,8 @@ async function remove(req: Request, res: Response) {
     try {
         const id = req.params.id as string;
 
-        if (!isValidUUID(id)) {
-            return res.status(400).json({ message: "ID inválido." });
+        if (!id) {
+            return res.status(400).json({ message: "ID do gênero não informado." });
         }
 
         const generoRemovido = await Genero.remove(id);
