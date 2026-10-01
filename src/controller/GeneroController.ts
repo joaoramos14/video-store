@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import Genero from "../models/genero.js";
+import Genero from "../models/Genero.js";
 
 async function getAll(req: Request, res: Response) {
     try {
