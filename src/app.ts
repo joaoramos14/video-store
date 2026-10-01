@@ -5,6 +5,9 @@ import filmeRoutes from "./routes/filmeRoutes.js";
 const app = express();
 app.use(express.json());
 
+// =================
+// Root
+// =================
 app.get("/", (req, res) => {
     res.status(200).json({
         message: "API Locadora de Filmes",
@@ -12,7 +15,14 @@ app.get("/", (req, res) => {
     });
 });
 
+// =================
+// Gêneros
+// =================
 app.use("/generos", generoRoutes);
+
+// =================
+// Filmes
+// =================
 app.use("/filmes", filmeRoutes);
 
 export default app;
