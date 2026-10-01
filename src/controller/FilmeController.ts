@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import Filme from "../models/filme.js";
-import Genero from "../models/genero.js";
+import Filme from "../models/Filme.js";
+import Genero from "../models/Genero.js";
 
 async function getAll(req: Request, res: Response) {
     try {
