@@ -3,10 +3,12 @@ import supabase from "../config/supabase.js";
 async function findAll() {
     const { data, error } = await supabase
         .from("generos")
-        .select("*")
-        .order("nome", { ascending: true });
+        .select("*");
 
-    if (error) throw error;
+    if (error) {
+        throw error;
+    }
+
     return data;
 }
 
@@ -17,30 +19,49 @@ async function findById(id: string) {
         .eq("id", id)
         .maybeSingle();
 
-    if (error) throw error;
+    if (error) {
+        throw error;
+    }
+
     return data;
 }
 
-async function create(genero: any) {
+async function create(genero: {
+    nome: string;
+    descricao: string;
+    ativo: boolean;
+}) {
     const { data, error } = await supabase
         .from("generos")
         .insert(genero)
         .select()
         .single();
 
-    if (error) throw error;
+    if (error) {
+        throw error;
+    }
+
     return data;
 }
 
-async function update(id: string, genero: any) {
+async function update(
+    id: string,
+    genero: {
+        nome: string;
+        descricao: string;
+        ativo: boolean;
+    }) {
     const { data, error } = await supabase
         .from("generos")
         .update(genero)
         .eq("id", id)
         .select()
-        .maybeSingle();
+        .single();
 
-    if (error) throw error;
+    if (error) {
+        throw error;
+    }
+
     return data;
 }
 
@@ -49,10 +70,12 @@ async function remove(id: string) {
         .from("generos")
         .delete()
         .eq("id", id)
-        .select()
-        .maybeSingle();
+        .single();
 
-    if (error) throw error;
+    if (error) {
+        throw error;
+    }
+
     return data;
 }
 
@@ -62,4 +85,4 @@ export default {
     create,
     update,
     remove
-};
+}
