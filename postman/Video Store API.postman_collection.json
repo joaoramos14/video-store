@@ -1,0 +1,299 @@
+{
+  "info": {
+    "_postman_id": "6de5d5d2-db02-4e7b-b857-6291fb1450a1",
+    "name": "Video Store API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57629928",
+    "_collection_link": "https://go.postman.co/collection/57629928-6de5d5d2-db02-4e7b-b857-6291fb1450a1?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Gêneros",
+      "item": [
+        {
+          "name": "GET - List Generos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/generos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "generos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Get Genero by ID",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/generos/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "generos",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST - Create Genero",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ação\",\n  \"descricao\": \"Filmes de ação e aventura\",\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/generos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "generos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT - Update Genero",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ação\",\n  \"descricao\": \"Filmes de ação e aventura\",\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/generos/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "generos",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE - Delete Genero",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/generos/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "generos",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Filmes",
+      "item": [
+        {
+          "name": "GET - List Filmes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/filmes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filmes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Get Filme by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/filmes/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filmes",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - List Filmes by Genero",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/generos/idgenero/filmes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "generos",
+                "idgenero",
+                "filmes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST - Create Filme",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"genero_id\": \"\",\n  \"titulo\": \"Matrix\",\n  \"descricao\": \"Um hacker descobre a verdadeira natureza da realidade.\",\n  \"ano_lancamento\": 1999,\n  \"diretor\": \"Lana e Lilly Wachowski\",\n  \"preco_locacao\": 9.9,\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/filmes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filmes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT - Update Filme",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"genero_id\": \"\",\n  \"titulo\": \"Matrix\",\n  \"descricao\": \"Um hacker descobre a verdadeira natureza da realidade.\",\n  \"ano_lancamento\": 1999,\n  \"diretor\": \"Lana e Lilly Wachowski\",\n  \"preco_locacao\": 9.9,\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/filmes/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filmes",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE - Delete Filme",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/filmes/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filmes",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ]
+}
