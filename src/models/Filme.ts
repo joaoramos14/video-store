@@ -17,7 +17,7 @@ async function findById(id: string) {
         .from("filmes")
         .select("*")
         .eq("id", id)
-        .single();
+        .maybeSingle()
 
     if (error) {
         throw error;

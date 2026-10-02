@@ -56,12 +56,18 @@ async function getById(req: Request<{ id: string }>, res: Response) {
     try {
         const filme = await Filme.findById(id);
 
+        if (!filme) {
+            return res.status(404).json({
+                message: "Filme não encontrado."
+            });
+        }
+
         res.status(200).json(filme);
     } catch (error) {
         console.error("Erro ao buscar filme: ", error);
 
-        res.status(404).json({
-            message: "Filme não encontrado.",
+        res.status(500).json({
+            message: "Erro ao buscar filme.",
         });
     }
 }
