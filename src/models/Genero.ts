@@ -70,7 +70,8 @@ async function remove(id: string) {
         .from("generos")
         .delete()
         .eq("id", id)
-        .single();
+        .select()
+        .maybeSingle();
 
     if (error) {
         throw error;

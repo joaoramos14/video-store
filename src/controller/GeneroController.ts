@@ -110,7 +110,13 @@ async function remove(req: Request<{ id: string }>, res: Response) {
     }
 
     try {
-        await Genero.remove(id);
+        const genero = await Genero.remove(id);
+
+        if (!genero) {
+            return res.status(404).json({
+                message: "Gênero não encontrado."
+            });
+        }
 
         res.status(200).json({
             message: "Gênero removido com sucesso.",
