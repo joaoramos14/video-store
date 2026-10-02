@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import Filme from "../models/Filme.js";
 import Genero from "../models/Genero.js";
+import { isUuid } from "../utils/isUuid.js";
 
 async function getAll(req: Request, res: Response) {
     try {
@@ -19,9 +20,9 @@ async function getAll(req: Request, res: Response) {
 async function getById(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
 
-    if (!id) {
+    if (!isUuid(id)) {
         return res.status(400).json({
-            message: "ID do filme não informado."
+            message: "ID inválido."
         });
     }
 
@@ -42,9 +43,9 @@ async function getById(req: Request<{ id: string }>, res: Response) {
 async function getByGenero(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
 
-    if (!id) {
+    if (!isUuid(id)) {
         return res.status(400).json({
-            message: "ID do gênero não informado."
+            message: "ID inválido."
         });
     }
 
@@ -84,6 +85,12 @@ async function create(req: Request, res: Response) {
         });
     }
 
+    if (!isUuid(genero_id)) {
+        return res.status(400).json({
+            message: "O campo 'genero_id' deve ser um UUID válido."
+        });
+    }
+
     try {
         const genero = await Genero.findById(genero_id);
 
@@ -109,9 +116,9 @@ async function update(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
     const { genero_id, titulo } = req.body;
 
-    if (!id) {
+    if (!isUuid(id)) {
         return res.status(400).json({
-            message: "ID do filme não informado."
+            message: "ID inválido."
         });
     }
 
@@ -126,6 +133,12 @@ async function update(req: Request<{ id: string }>, res: Response) {
             message: "O campo 'genero_id' é obrigatório."
         });
     }
+
+    if (!isUuid(genero_id)) {
+        return res.status(400).json({
+            message: "O campo 'genero_id' deve ser um UUID válido."
+        });
+    }    
 
     try {
         const genero = await Genero.findById(genero_id);
@@ -157,9 +170,9 @@ async function update(req: Request<{ id: string }>, res: Response) {
 async function remove(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
 
-    if (!id) {
+    if (!isUuid(id)) {
         return res.status(400).json({
-            message: "ID do filme não informado."
+            message: "ID inválido."
         });
     }
 

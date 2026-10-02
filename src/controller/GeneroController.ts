@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import Genero from "../models/Genero.js";
+import { isUuid } from "../utils/isUuid.js";
 
 async function getAll(req: Request, res: Response) {
     try {
@@ -18,9 +19,9 @@ async function getAll(req: Request, res: Response) {
 async function getById(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
 
-    if (!id) {
+    if (!isUuid(id)) {
         return res.status(400).json({
-            message: "ID do gênero não informado."
+            message: "ID inválido."
         });
     }
 
@@ -69,9 +70,9 @@ async function update(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
     const { nome } = req.body;
 
-    if (!id) {
+    if (!isUuid(id)) {
         return res.status(400).json({
-            message: "ID do gênero não informado."
+            message: "ID inválido."
         });
     }
 
@@ -103,9 +104,9 @@ async function update(req: Request<{ id: string }>, res: Response) {
 async function remove(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
 
-    if (!id) {
+    if (!isUuid(id)) {
         return res.status(400).json({
-            message: "ID do gênero não informado."
+            message: "ID inválido."
         });
     }
 
