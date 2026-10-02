@@ -3,7 +3,8 @@ import supabase from "../config/supabase.js";
 async function findAll() {
     const { data, error } = await supabase
         .from("generos")
-        .select("*");
+        .select("*")
+        .order("nome", { ascending: true });
 
     if (error) {
         throw error;
