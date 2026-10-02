@@ -3,7 +3,8 @@ import supabase from "../config/supabase.js";
 async function findAll() {
     const { data, error } = await supabase
         .from("generos")
-        .select("*");
+        .select("*")
+        .order("nome", { ascending: true });
 
     if (error) {
         throw error;
@@ -56,7 +57,7 @@ async function update(
         .update(genero)
         .eq("id", id)
         .select()
-        .single();
+        .maybeSingle()
 
     if (error) {
         throw error;
@@ -70,7 +71,8 @@ async function remove(id: string) {
         .from("generos")
         .delete()
         .eq("id", id)
-        .single();
+        .select()
+        .maybeSingle();
 
     if (error) {
         throw error;

@@ -3,7 +3,8 @@ import supabase from "../config/supabase.js";
 async function findAll() {
     const { data, error } = await supabase
         .from("filmes")
-        .select("*");
+        .select("*")
+        .order("titulo", { ascending: true });
 
     if (error) {
         throw error;
@@ -17,7 +18,7 @@ async function findById(id: string) {
         .from("filmes")
         .select("*")
         .eq("id", id)
-        .single();
+        .maybeSingle()
 
     if (error) {
         throw error;
@@ -80,7 +81,7 @@ async function update(
         .update(filme)
         .eq("id", id)
         .select()
-        .single();
+        .maybeSingle();
 
     if (error) {
         throw error;
@@ -94,7 +95,8 @@ async function remove(id: string) {
         .from("filmes")
         .delete()
         .eq("id", id)
-        .single();
+        .select()
+        .maybeSingle();
 
     if (error) {
         throw error;
