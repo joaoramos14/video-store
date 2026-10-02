@@ -80,7 +80,7 @@ async function update(
         .update(filme)
         .eq("id", id)
         .select()
-        .single();
+        .maybeSingle();
 
     if (error) {
         throw error;

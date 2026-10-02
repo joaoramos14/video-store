@@ -138,6 +138,12 @@ async function update(req: Request<{ id: string }>, res: Response) {
 
         const filme = await Filme.update(id, req.body);
 
+        if (!filme) {
+            return res.status(404).json({
+                message: "Filme não encontrado."
+            });
+        }
+
         res.status(200).json(filme);
     } catch (error) {
         console.error("Erro ao atualizar filme: ", error);
