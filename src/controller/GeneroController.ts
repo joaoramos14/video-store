@@ -2,6 +2,21 @@ import type { Request, Response } from "express";
 import Genero from "../models/Genero.js";
 import { isUuid } from "../utils/isUuid.js";
 
+function validarGenero(body: any): string | null {
+    const { nome, descricao, ativo } = body;
+
+    if (typeof nome !== "string" || nome.trim() === "") {
+        return "O campo 'nome' deve ser um texto não vazio.";
+    }
+    if (descricao !== undefined && typeof descricao !== "string") {
+        return "O campo 'descricao' deve ser um texto.";
+    }
+    if (ativo !== undefined && typeof ativo !== "boolean") {
+        return "O campo 'ativo' deve ser true ou false.";
+    }
+    return null;
+}
+
 async function getAll(req: Request, res: Response) {
     try {
         const generos = await Genero.findAll();
@@ -45,16 +60,16 @@ async function getById(req: Request<{ id: string }>, res: Response) {
 }
 
 async function create(req: Request, res: Response) {
-    const { nome } = req.body;
-
-    if (!nome) {
-        return res.status(400).json({
-            message: "O campo 'nome' é obrigatório."
-        });
+    const erro = validarGenero(req.body);
+    if (erro) {
+        return res.status(400).json({ message: erro });
     }
 
+    const { nome, descricao, ativo } = req.body;
+    const dados = { nome, descricao, ativo };
+
     try {
-        const genero = await Genero.create(req.body);
+        const genero = await Genero.create(dados);
 
         res.status(201).json(genero);
     } catch (error) {
@@ -68,7 +83,6 @@ async function create(req: Request, res: Response) {
 
 async function update(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
-    const { nome } = req.body;
 
     if (!isUuid(id)) {
         return res.status(400).json({
@@ -76,14 +90,16 @@ async function update(req: Request<{ id: string }>, res: Response) {
         });
     }
 
-    if (!nome) {
-        return res.status(400).json({
-            message: "O campo 'nome' é obrigatório."
-        });
+    const erro = validarGenero(req.body);
+    if (erro) {
+        return res.status(400).json({ message: erro });
     }
 
+    const { nome, descricao, ativo } = req.body;
+    const dados = { nome, descricao, ativo };
+
     try {
-        const genero = await Genero.update(id, req.body);
+        const genero = await Genero.update(id, dados);
 
         if (!genero) {
             return res.status(404).json({

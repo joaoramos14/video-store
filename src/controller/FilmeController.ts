@@ -3,6 +3,33 @@ import Filme from "../models/Filme.js";
 import Genero from "../models/Genero.js";
 import { isUuid } from "../utils/isUuid.js";
 
+function validarFilme(body: any): string | null {
+    const { titulo, descricao, ano_lancamento, diretor, preco_locacao, disponivel, ativo } = body;
+
+    if (typeof titulo !== "string" || titulo.trim() === "") {
+        return "O campo 'titulo' deve ser um texto não vazio.";
+    }
+    if (descricao !== undefined && typeof descricao !== "string") {
+        return "O campo 'descricao' deve ser um texto.";
+    }
+    if (diretor !== undefined && typeof diretor !== "string") {
+        return "O campo 'diretor' deve ser um texto.";
+    }
+    if (ano_lancamento !== undefined && (!Number.isInteger(ano_lancamento) || ano_lancamento < 1888)) {
+        return "O campo 'ano_lancamento' deve ser um número inteiro válido.";
+    }
+    if (preco_locacao !== undefined && (typeof preco_locacao !== "number" || preco_locacao < 0)) {
+        return "O campo 'preco_locacao' deve ser um número maior ou igual a zero.";
+    }
+    if (disponivel !== undefined && typeof disponivel !== "boolean") {
+        return "O campo 'disponivel' deve ser true ou false.";
+    }
+    if (ativo !== undefined && typeof ativo !== "boolean") {
+        return "O campo 'ativo' deve ser true ou false.";
+    }
+    return null;
+}
+
 async function getAll(req: Request, res: Response) {
     try {
         const filmes = await Filme.findAll();
@@ -91,6 +118,14 @@ async function create(req: Request, res: Response) {
         });
     }
 
+        const erro = validarFilme(req.body);
+    if (erro) {
+        return res.status(400).json({ message: erro });
+    }
+
+    const { descricao, ano_lancamento, diretor, preco_locacao, disponivel, ativo } = req.body;
+    const dados = { genero_id, titulo, descricao, ano_lancamento, diretor, preco_locacao, disponivel, ativo };
+
     try {
         const genero = await Genero.findById(genero_id);
 
@@ -100,7 +135,7 @@ async function create(req: Request, res: Response) {
             });
         }
 
-        const filme = await Filme.create(req.body);
+        const filme = await Filme.create(dados);
 
         res.status(201).json(filme);
     } catch (error) {
@@ -138,7 +173,15 @@ async function update(req: Request<{ id: string }>, res: Response) {
         return res.status(400).json({
             message: "O campo 'genero_id' deve ser um UUID válido."
         });
-    }    
+    }
+
+        const erro = validarFilme(req.body);
+    if (erro) {
+        return res.status(400).json({ message: erro });
+    }
+
+    const { descricao, ano_lancamento, diretor, preco_locacao, disponivel, ativo } = req.body;
+    const dados = { genero_id, titulo, descricao, ano_lancamento, diretor, preco_locacao, disponivel, ativo };
 
     try {
         const genero = await Genero.findById(genero_id);
@@ -149,7 +192,7 @@ async function update(req: Request<{ id: string }>, res: Response) {
             });
         }
 
-        const filme = await Filme.update(id, req.body);
+        const filme = await Filme.update(id, dados);
 
         if (!filme) {
             return res.status(404).json({
