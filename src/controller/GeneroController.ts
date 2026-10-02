@@ -84,6 +84,12 @@ async function update(req: Request<{ id: string }>, res: Response) {
     try {
         const genero = await Genero.update(id, req.body);
 
+        if (!genero) {
+            return res.status(404).json({
+                message: "Gênero não encontrado."
+            });
+        }
+
         res.status(200).json(genero);
     } catch (error) {
         console.error("Erro ao atualizar gênero: ", error);

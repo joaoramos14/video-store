@@ -56,7 +56,7 @@ async function update(
         .update(genero)
         .eq("id", id)
         .select()
-        .single();
+        .maybeSingle()
 
     if (error) {
         throw error;
