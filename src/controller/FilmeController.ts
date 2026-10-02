@@ -164,7 +164,13 @@ async function remove(req: Request<{ id: string }>, res: Response) {
     }
 
     try {
-        await Filme.remove(id);
+        const filme = await Filme.remove(id);
+
+        if (!filme) {
+            return res.status(404).json({
+                message: "Filme não encontrado."
+            });
+        }
 
         res.status(200).json({
             message: "Filme removido com sucesso.",

@@ -94,7 +94,8 @@ async function remove(id: string) {
         .from("filmes")
         .delete()
         .eq("id", id)
-        .single();
+        .select()
+        .maybeSingle();
 
     if (error) {
         throw error;
