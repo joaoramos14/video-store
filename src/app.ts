@@ -1,28 +1,31 @@
 import express from "express";
-import generoRoutes from "./routes/generoRoutes.js";
-import filmeRoutes from "./routes/filmeRoutes.js";
+import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swagger.js";
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
-// =================
+// ==============================
 // Root
-// =================
+// ==============================
 app.get("/", (req, res) => {
-    res.status(200).json({
-        message: "API Locadora de Filmes",
-        version: "1.0.0"
-    });
+    res.redirect("/api-docs");
 });
 
-// =================
-// Gêneros
-// =================
-app.use("/generos", generoRoutes);
+// ==============================
+// Swagger Documentation
+// ==============================
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec),
+);
 
-// =================
-// Filmes
-// =================
-app.use("/filmes", filmeRoutes);
+// ==============================
+// Routes
+// ==============================
 
 export default app;
