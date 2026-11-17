@@ -73,6 +73,95 @@ const options: swaggerJSDoc.Options = {
                     },
                 },
 
+                Movie: {
+                    type: "object",
+                    properties: {
+                        id: {
+                            type: "string",
+                            format: "uuid",
+                            readOnly: true,
+                        },
+                        genre_id: {
+                            type: "string",
+                            format: "uuid",
+                            example: "bdf4183d-79a0-4f6f-8ead-03400eb6ed60",
+                        },
+                        title: { type: "string", example: "Matrix" },
+                        director: { type: "string", example: "Lana Wachowski" },
+                        synopsis: {
+                            type: "string",
+                            example: "Um hacker descobre que a realidade é uma simulação.",
+                        },
+                        year: { type: "integer", minimum: 1888, example: 1999 },
+                        duration: { type: "integer", minimum: 1, example: 136 },
+                        cover: {
+                            type: "string",
+                            format: "uri",
+                            example: "https://exemplo.com/capas/matrix.jpg",
+                        },
+                        stock: { type: "integer", minimum: 0, example: 5 },
+                        daily_price: { type: "number", minimum: 0, example: 6.5 },
+                        active: { type: "boolean", example: true },
+                        created_at: {
+                            type: "string",
+                            format: "date-time",
+                            readOnly: true,
+                        },
+                    },
+                },
+                CreateMovie: {
+                    type: "object",
+                    required: ["genre_id", "title", "year", "duration", "daily_price"],
+                    properties: {
+                        genre_id: {
+                            type: "string",
+                            format: "uuid",
+                            example: "bdf4183d-79a0-4f6f-8ead-03400eb6ed60",
+                        },
+                        title: { type: "string", example: "Matrix" },
+                        director: { type: "string", example: "Lana Wachowski" },
+                        synopsis: {
+                            type: "string",
+                            example: "Um hacker descobre que a realidade é uma simulação.",
+                        },
+                        year: { type: "integer", minimum: 1888, example: 1999 },
+                        duration: { type: "integer", minimum: 1, example: 136 },
+                        cover: {
+                            type: "string",
+                            format: "uri",
+                            example: "https://exemplo.com/capas/matrix.jpg",
+                        },
+                        stock: { type: "integer", minimum: 0, default: 0, example: 5 },
+                        daily_price: { type: "number", minimum: 0, example: 6.5 },
+                    },
+                },
+                UpdateMovie: {
+                    type: "object",
+                    properties: {
+                        genre_id: {
+                            type: "string",
+                            format: "uuid",
+                            example: "bdf4183d-79a0-4f6f-8ead-03400eb6ed60",
+                        },
+                        title: { type: "string", example: "Matrix" },
+                        director: { type: "string", example: "Lana Wachowski" },
+                        synopsis: {
+                            type: "string",
+                            example: "Um hacker descobre que a realidade é uma simulação.",
+                        },
+                        year: { type: "integer", minimum: 1888, example: 1999 },
+                        duration: { type: "integer", minimum: 1, example: 136 },
+                        cover: {
+                            type: "string",
+                            format: "uri",
+                            example: "https://exemplo.com/capas/matrix.jpg",
+                        },
+                        stock: { type: "integer", minimum: 0, example: 5 },
+                        daily_price: { type: "number", minimum: 0, example: 6.5 },
+                        active: { type: "boolean", example: true },
+                    },
+                },
+
                 Error: {
                     type: "object",
                     properties: {
