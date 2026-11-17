@@ -34,6 +34,45 @@ const options: swaggerJSDoc.Options = {
         ],
         components: {
             schemas: {
+                Genre: {
+                    type: "object",
+                    properties: {
+                        id: {
+                            type: "string",
+                            format: "uuid",
+                            readOnly: true,
+                        },
+                        name: {
+                            type: "string",
+                            example: "Ação",
+                        },
+                        description: {
+                            type: "string",
+                            example: "Filmes de ação e aventura",
+                        },
+                        active: {
+                            type: "boolean",
+                            example: true,
+                        },
+                    },
+                },
+                CreateGenre: {
+                    type: "object",
+                    required: ["name"],
+                    properties: {
+                        name: { type: "string", example: "Ação" },
+                        description: { type: "string", example: "Filmes de ação e aventura" },
+                    },
+                },
+                UpdateGenre: {
+                    type: "object",
+                    properties: {
+                        name: { type: "string", example: "Ação" },
+                        description: { type: "string", example: "Filmes de ação e aventura" },
+                        active: { type: "boolean", example: true },
+                    },
+                },
+
                 Error: {
                     type: "object",
                     properties: {

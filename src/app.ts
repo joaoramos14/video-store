@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
+import genreRoutes from "./routes/genreRoutes.js";
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.use(
 // ==============================
 // Routes
 // ==============================
+app.use("/genres", genreRoutes);
 
 export default app;
