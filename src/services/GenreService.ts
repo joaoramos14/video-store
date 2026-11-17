@@ -1,5 +1,6 @@
 import { Genre } from "../model/Genre.js";
 import GenreRepository from "../repositories/GenreRepository.js";
+import MovieRepository from "../repositories/MovieRepository.js";
 import { ValidationError } from "../errors/ValidantionError.js";
 
 interface UpdateGenreData {
@@ -19,7 +20,7 @@ async function getById(id: string) {
 async function getMovies(id: string) {
     await GenreRepository.findById(id);
 
-    return GenreRepository.findMoviesByGenreId(id);
+    return MovieRepository.findByGenreId(id);
 }
 
 async function search(keyword: string) {
