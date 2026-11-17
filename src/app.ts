@@ -3,6 +3,7 @@ import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
 import genreRoutes from "./routes/genreRoutes.js";
+import movieRoutes from "./routes/movieRoutes.js";
 
 const app = express();
 
@@ -29,5 +30,6 @@ app.use(
 // Routes
 // ==============================
 app.use("/genres", genreRoutes);
+app.use("/movies", movieRoutes);
 
 export default app;
