@@ -1,11 +1,8 @@
 import { randomInt, randomUUID } from "node:crypto";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import request from "supertest";
 import app from "../app.js";
 import supabase from "../config/supabase.js";
-
-// Cada requisição vai até o Supabase pela internet, então o limite padrão de 5s pode ser curto.
-vi.setConfig({ testTimeout: 20_000 });
 
 describe("Customer - Testes de integração", () => {
 
