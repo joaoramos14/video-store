@@ -53,20 +53,6 @@ async function findByName(name: string) {
     return data;
 }
 
-async function findMoviesByGenreId(genreId: string) {
-    const { data, error } = await supabase
-        .from("movies")
-        .select("*")
-        .eq("genre_id", genreId)
-        .order("title", { ascending: true });
-
-    if (error) {
-        throw error;
-    }
-
-    return data;
-}
-
 async function searchByKeyword(keyword: string) {
     const { data, error } = await supabase
         .from("genres")
@@ -155,7 +141,6 @@ export default {
     findAll,
     findById,
     findByName,
-    findMoviesByGenreId,
     searchByKeyword,
     create,
     update,

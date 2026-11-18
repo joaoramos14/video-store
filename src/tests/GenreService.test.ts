@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import GenreService from "../services/GenreService.js";
 import GenreRepository from "../repositories/GenreRepository.js";
+import MovieRepository from "../repositories/MovieRepository.js";
 import { Genre } from "../model/Genre.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 
 vi.mock("../repositories/GenreRepository.js");
+vi.mock("../repositories/MovieRepository.js");
 
 describe("GenreService - Testes Unitários", () => {
 
@@ -142,11 +144,11 @@ describe("GenreService - Testes Unitários", () => {
     it("deve listar os filmes de um gênero existente", async () => {
         const genre = Genre.restore(id, "Ação", true);
         vi.mocked(GenreRepository.findById).mockResolvedValue(genre);
-        vi.mocked(GenreRepository.findMoviesByGenreId).mockResolvedValue([{ id: "1", title: "Matrix" }]);
+        vi.mocked(MovieRepository.findByGenreId).mockResolvedValue([{ id: "1", title: "Matrix" }]);
 
         const result = await GenreService.getMovies(id);
 
-        expect(GenreRepository.findMoviesByGenreId).toHaveBeenCalledWith(id);
+        expect(MovieRepository.findByGenreId).toHaveBeenCalledWith(id);
         expect(result).toEqual([{ id: "1", title: "Matrix" }]);
     });
 
@@ -156,7 +158,7 @@ describe("GenreService - Testes Unitários", () => {
         await expect(GenreService.getMovies(id))
             .rejects.toThrow("Gênero não encontrado.");
 
-        expect(GenreRepository.findMoviesByGenreId).not.toHaveBeenCalled();
+        expect(MovieRepository.findByGenreId).not.toHaveBeenCalled();
     });
 
     it("deve remover um gênero", async () => {

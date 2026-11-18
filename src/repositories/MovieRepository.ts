@@ -46,6 +46,20 @@ async function findById(id: string): Promise<Movie> {
     );
 }
 
+async function findByGenreId(genreId: string) {
+    const { data, error } = await supabase
+        .from("movies")
+        .select("*")
+        .eq("genre_id", genreId)
+        .order("title", { ascending: true });
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+}
+
 async function searchByKeyword(keyword: string) {
     const { data, error } = await supabase
         .from("movies")
@@ -159,6 +173,7 @@ async function remove(id: string) {
 export default {
     findAll,
     findById,
+    findByGenreId,
     searchByKeyword,
     create,
     update,
