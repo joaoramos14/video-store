@@ -4,6 +4,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
 import genreRoutes from "./routes/genreRoutes.js";
 import movieRoutes from "./routes/movieRoutes.js";
+import customerRoutes from "./routes/customerRoutes.js";
 
 const app = express();
 
@@ -31,5 +32,6 @@ app.use(
 // ==============================
 app.use("/genres", genreRoutes);
 app.use("/movies", movieRoutes);
+app.use("/customers", customerRoutes);
 
 export default app;
