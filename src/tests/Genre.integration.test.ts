@@ -96,6 +96,13 @@ describe("Genre - Testes de integração", () => {
         expect(response.body.message).toBe("O nome do gênero é obrigatório.");
     });
 
+    it("não deve criar um gênero sem corpo na requisição", async () => {
+        const response = await request(app).post("/genres");
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("O nome do gênero é obrigatório.");
+    });
+
     it("não deve criar um gênero com nome repetido", async () => {
         const { data } = await createGenre();
 
