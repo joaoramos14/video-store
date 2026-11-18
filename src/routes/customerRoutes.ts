@@ -108,39 +108,6 @@ router.get("/:id", CustomerController.getById);
 
 /**
  * @openapi
- * /customers/{id}/rentals:
- *   get:
- *     tags:
- *       - Customers
- *     summary: Listar as locações de um cliente
- *     description: Retorna as locações do cliente informado, da mais recente para a mais antiga.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID do cliente.
- *     responses:
- *       200:
- *         description: Locações do cliente retornadas com sucesso.
- *       404:
- *         description: Cliente não encontrado.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *       500:
- *         description: Erro interno ao buscar locações do cliente.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- */
-router.get("/:id/rentals", CustomerController.getRentals);
-
-/**
- * @openapi
  * /customers:
  *   post:
  *     tags:

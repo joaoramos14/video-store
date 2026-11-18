@@ -18,12 +18,6 @@ async function getById(id: string) {
     return CustomerRepository.findById(id);
 }
 
-async function getRentals(id: string) {
-    await CustomerRepository.findById(id);
-
-    return CustomerRepository.findRentalsByCustomerId(id);
-}
-
 async function search(keyword: string) {
     return CustomerRepository.searchByKeyword(keyword);
 }
@@ -95,7 +89,6 @@ async function remove(id: string) {
 export default {
     getAll,
     getById,
-    getRentals,
     search,
     create,
     update,

@@ -174,25 +174,6 @@ describe("CustomerService - Testes Unitários", () => {
         expect(result).toEqual([{ id, name: "Maria da Silva" }]);
     });
 
-    it("deve listar as locações de um cliente existente", async () => {
-        vi.mocked(CustomerRepository.findById).mockResolvedValue(makeCustomer());
-        vi.mocked(CustomerRepository.findRentalsByCustomerId).mockResolvedValue([{ id: "1", status: "reserved" }]);
-
-        const result = await CustomerService.getRentals(id);
-
-        expect(CustomerRepository.findRentalsByCustomerId).toHaveBeenCalledWith(id);
-        expect(result).toEqual([{ id: "1", status: "reserved" }]);
-    });
-
-    it("não deve listar as locações de um cliente que não existe", async () => {
-        vi.mocked(CustomerRepository.findById).mockRejectedValue(new NotFoundError("Cliente não encontrado."));
-
-        await expect(CustomerService.getRentals(id))
-            .rejects.toThrow("Cliente não encontrado.");
-
-        expect(CustomerRepository.findRentalsByCustomerId).not.toHaveBeenCalled();
-    });
-
     it("deve remover um cliente", async () => {
         vi.mocked(CustomerRepository.remove).mockResolvedValue({ id, name: "Maria da Silva" });
 

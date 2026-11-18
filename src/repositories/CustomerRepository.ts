@@ -69,20 +69,6 @@ async function findByCpf(cpf: string) {
     return data;
 }
 
-async function findRentalsByCustomerId(customerId: string) {
-    const { data, error } = await supabase
-        .from("rentals")
-        .select("*")
-        .eq("customer_id", customerId)
-        .order("created_at", { ascending: false });
-
-    if (error) {
-        throw error;
-    }
-
-    return data;
-}
-
 async function searchByKeyword(keyword: string) {
     const { data, error } = await supabase
         .from("customers")
@@ -176,7 +162,6 @@ export default {
     findById,
     findByEmail,
     findByCpf,
-    findRentalsByCustomerId,
     searchByKeyword,
     create,
     update,

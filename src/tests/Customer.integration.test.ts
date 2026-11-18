@@ -266,26 +266,6 @@ describe("Customer - Testes de integração", () => {
         expect(response.body.message).toBe("Palavra-chave não informada.");
     });
 
-    it("deve listar as locações de um cliente", async () => {
-        const { id } = await createCustomer();
-        const rental = await createRental(id);
-
-        const response = await request(app).get(`/customers/${id}/rentals`);
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(1);
-        expect(response.body[0]).toMatchObject({
-            id: rental.id,
-            customer_id: id,
-        });
-    });
-
-    it("deve retornar 404 ao listar as locações de um cliente que não existe", async () => {
-        const response = await request(app).get(`/customers/${randomUUID()}/rentals`);
-
-        expect(response.status).toBe(404);
-    });
-
     it("deve atualizar os dados de um cliente", async () => {
         const { id, data } = await createCustomer();
 

@@ -66,26 +66,6 @@ async function getById(req: Request<{ id: string }>, res: Response) {
     }
 }
 
-async function getRentals(req: Request<{ id: string }>, res: Response) {
-    const { id } = req.params;
-
-    try {
-        const rentals = await CustomerService.getRentals(id);
-
-        return res.status(200).json(rentals);
-    } catch (error) {
-        console.error("Erro ao buscar locações do cliente:", error);
-
-        if (error instanceof NotFoundError) {
-            return res.status(404).json({ message: error.message });
-        }
-
-        return res.status(500).json({
-            message: "Erro interno ao buscar locações do cliente.",
-        });
-    }
-}
-
 async function create(req: Request, res: Response) {
     const { name, email, cpf, phone } = req.body ?? {};
 
@@ -161,7 +141,6 @@ export default {
     getAll,
     search,
     getById,
-    getRentals,
     create,
     update,
     remove,
