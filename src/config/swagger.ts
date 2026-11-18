@@ -161,7 +161,57 @@ const options: swaggerJSDoc.Options = {
                         active: { type: "boolean", example: true },
                     },
                 },
-
+                Customer: {
+                    type: "object",
+                    properties: {
+                        id: {
+                            type: "string",
+                            format: "uuid",
+                            readOnly: true,
+                        },
+                        name: {
+                            type: "string",
+                            example: "Maria da Silva",
+                        },
+                        email: {
+                            type: "string",
+                            format: "email",
+                            example: "maria@email.com",
+                        },
+                        cpf: {
+                            type: "string",
+                            example: "52998224725",
+                        },
+                        phone: {
+                            type: "string",
+                            example: "41999998888",
+                        },
+                        active: {
+                            type: "boolean",
+                            example: true,
+                        },
+                    },
+                },
+                CreateCustomer: {
+                    type: "object",
+                    required: ["name", "email", "cpf"],
+                    properties: {
+                        name: { type: "string", example: "Maria da Silva" },
+                        email: { type: "string", format: "email", example: "maria@email.com" },
+                        cpf: { type: "string", example: "52998224725" },
+                        phone: { type: "string", example: "41999998888" },
+                    },
+                },
+                UpdateCustomer: {
+                    type: "object",
+                    properties: {
+                        name: { type: "string", example: "Maria da Silva" },
+                        email: { type: "string", format: "email", example: "maria@email.com" },
+                        cpf: { type: "string", example: "52998224725" },
+                        phone: { type: "string", example: "41999998888" },
+                        active: { type: "boolean", example: true },
+                    },
+                },
                 Error: {
                     type: "object",
                     properties: {
