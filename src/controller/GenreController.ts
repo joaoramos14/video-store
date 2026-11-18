@@ -85,7 +85,7 @@ async function getMovies(req: Request<{ id: string }>, res: Response) {
 }
 
 async function create(req: Request, res: Response) {
-    const { name, description } = req.body;
+    const { name, description } = req.body ?? {};
 
     try {
         const createdGenre = await GenreService.create(name, description);
@@ -106,7 +106,7 @@ async function create(req: Request, res: Response) {
 
 async function update(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
-    const { name, description, active } = req.body;
+    const { name, description, active } = req.body ?? {};
 
     try {
         const updatedGenre = await GenreService.update(id, { name, description, active });
