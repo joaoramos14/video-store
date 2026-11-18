@@ -1,5 +1,6 @@
 import { Customer } from "../model/Customer.js";
 import CustomerRepository from "../repositories/CustomerRepository.js";
+import RentalRepository from "../repositories/RentalRepository.js";
 import { ValidationError } from "../errors/ValidantionError.js";
 
 interface UpdateCustomerData {
@@ -16,6 +17,12 @@ async function getAll() {
 
 async function getById(id: string) {
     return CustomerRepository.findById(id);
+}
+
+async function getRentals(id: string) {
+    await CustomerRepository.findById(id);
+
+    return RentalRepository.findByCustomerId(id);
 }
 
 async function search(keyword: string) {
@@ -89,6 +96,7 @@ async function remove(id: string) {
 export default {
     getAll,
     getById,
+    getRentals,
     search,
     create,
     update,
