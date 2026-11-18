@@ -66,7 +66,7 @@ create table rentals (
     id uuid primary key default gen_random_uuid(),
     customer_id uuid not null references customers(id) on delete restrict,
     movie_id uuid not null references movies(id) on delete restrict,
-    days integer not null check (days between 1 and 7),
+    days integer not null check (days between 1 and 30),
     daily_price numeric(10,2) not null check (daily_price >= 0),
     total_price numeric(10,2) not null check (total_price >= 0),
     late_fee numeric(10,2) not null default 0 check (late_fee >= 0),
