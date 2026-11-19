@@ -1,4 +1,5 @@
 import { Rental } from "../model/Rental.js";
+import type { Customer } from "../model/Customer.js";
 import type { Movie } from "../model/Movie.js";
 import RentalRepository from "../repositories/RentalRepository.js";
 import CustomerRepository from "../repositories/CustomerRepository.js";
@@ -16,10 +17,12 @@ interface UpdateRentalData {
     days?: number;
 }
 
-// Regra que depende do banco: o cliente precisa existir.
-async function ensureCustomerExists(customerId: string): Promise<void> {
+// Regra que depende do banco: o cliente precisa existir e estar ativo.
+async function ensureCustomerIsActive(customerId: string): Promise<void> {
+    let customer: Customer;
+
     try {
-        await CustomerRepository.findById(customerId);
+        customer = await CustomerRepository.findById(customerId);
     } catch (error) {
         if (error instanceof NotFoundError) {
             throw new ValidationError("O cliente informado não existe.");
@@ -27,12 +30,18 @@ async function ensureCustomerExists(customerId: string): Promise<void> {
 
         throw error;
     }
+
+    if (!customer.isActive()) {
+        throw new ValidationError("O cliente informado está inativo.");
+    }
 }
 
-// Regra que depende do banco: o filme precisa existir.
-async function findMovie(movieId: string): Promise<Movie> {
+// Regra que depende do banco: o filme precisa existir e estar ativo.
+async function findActiveMovie(movieId: string): Promise<Movie> {
+    let movie: Movie;
+
     try {
-        return await MovieRepository.findById(movieId);
+        movie = await MovieRepository.findById(movieId);
     } catch (error) {
         if (error instanceof NotFoundError) {
             throw new ValidationError("O filme informado não existe.");
@@ -40,6 +49,12 @@ async function findMovie(movieId: string): Promise<Movie> {
 
         throw error;
     }
+
+    if (!movie.isActive()) {
+        throw new ValidationError("O filme informado está inativo.");
+    }
+
+    return movie;
 }
 
 // Estoque: a reserva separa uma cópia (-1). Cancelar, expirar ou devolver devolve essa cópia (+1).
@@ -67,9 +82,9 @@ async function search(keyword: string) {
 async function create(data: CreateRentalData) {
     const rental = new Rental(data.customer_id, data.movie_id, data.days);
 
-    await ensureCustomerExists(rental.getCustomerId());
+    await ensureCustomerIsActive(rental.getCustomerId());
 
-    const movie = await findMovie(rental.getMovieId());
+    const movie = await findActiveMovie(rental.getMovieId());
 
     const openRentals = await RentalRepository.findOpenByCustomerAndMovie(
         rental.getCustomerId(),
