@@ -212,6 +212,67 @@ const options: swaggerJSDoc.Options = {
                         active: { type: "boolean", example: true },
                     },
                 },
+                Rental: {
+                    type: "object",
+                    properties: {
+                        id: {
+                            type: "string",
+                            format: "uuid",
+                            readOnly: true,
+                        },
+                        customer_id: {
+                            type: "string",
+                            format: "uuid",
+                            example: "3f8a2c1d-6b7e-4f90-a1b2-c3d4e5f60718",
+                        },
+                        movie_id: {
+                            type: "string",
+                            format: "uuid",
+                            example: "9b2f6d1e-5a7c-4c3e-8f10-2d4b6a8c0e12",
+                        },
+                        days: { type: "integer", minimum: 1, maximum: 30, example: 3 },
+                        daily_price: { type: "number", minimum: 0, example: 6.5 },
+                        total_price: { type: "number", minimum: 0, example: 19.5 },
+                        late_fee: { type: "number", minimum: 0, example: 0 },
+                        status: {
+                            type: "string",
+                            enum: ["reserved", "active", "returned", "cancelled", "expired"],
+                            example: "reserved",
+                        },
+                        reserved_until: { type: "string", format: "date-time" },
+                        rented_at: { type: "string", format: "date-time", nullable: true },
+                        due_at: { type: "string", format: "date-time", nullable: true },
+                        returned_at: { type: "string", format: "date-time", nullable: true },
+                        created_at: {
+                            type: "string",
+                            format: "date-time",
+                            readOnly: true,
+                        },
+                    },
+                },
+                CreateRental: {
+                    type: "object",
+                    required: ["customer_id", "movie_id", "days"],
+                    properties: {
+                        customer_id: {
+                            type: "string",
+                            format: "uuid",
+                            example: "3f8a2c1d-6b7e-4f90-a1b2-c3d4e5f60718",
+                        },
+                        movie_id: {
+                            type: "string",
+                            format: "uuid",
+                            example: "9b2f6d1e-5a7c-4c3e-8f10-2d4b6a8c0e12",
+                        },
+                        days: { type: "integer", minimum: 1, maximum: 30, example: 3 },
+                    },
+                },
+                UpdateRental: {
+                    type: "object",
+                    properties: {
+                        days: { type: "integer", minimum: 1, maximum: 30, example: 5 },
+                    },
+                },
                 Error: {
                     type: "object",
                     properties: {

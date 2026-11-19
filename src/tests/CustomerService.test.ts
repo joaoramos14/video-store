@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import CustomerService from "../services/CustomerService.js";
 import CustomerRepository from "../repositories/CustomerRepository.js";
+import RentalRepository from "../repositories/RentalRepository.js";
 import { Customer } from "../model/Customer.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 
 vi.mock("../repositories/CustomerRepository.js");
+vi.mock("../repositories/RentalRepository.js");
 
 describe("CustomerService - Testes Unitários", () => {
 
@@ -172,6 +174,25 @@ describe("CustomerService - Testes Unitários", () => {
 
         expect(CustomerRepository.searchByKeyword).toHaveBeenCalledWith("maria");
         expect(result).toEqual([{ id, name: "Maria da Silva" }]);
+    });
+
+    it("deve listar as locações de um cliente existente", async () => {
+        vi.mocked(CustomerRepository.findById).mockResolvedValue(makeCustomer());
+        vi.mocked(RentalRepository.findByCustomerId).mockResolvedValue([{ id: "1", status: "reserved" }]);
+
+        const result = await CustomerService.getRentals(id);
+
+        expect(RentalRepository.findByCustomerId).toHaveBeenCalledWith(id);
+        expect(result).toEqual([{ id: "1", status: "reserved" }]);
+    });
+
+    it("não deve listar as locações de um cliente que não existe", async () => {
+        vi.mocked(CustomerRepository.findById).mockRejectedValue(new NotFoundError("Cliente não encontrado."));
+
+        await expect(CustomerService.getRentals(id))
+            .rejects.toThrow("Cliente não encontrado.");
+
+        expect(RentalRepository.findByCustomerId).not.toHaveBeenCalled();
     });
 
     it("deve remover um cliente", async () => {
