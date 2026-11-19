@@ -148,7 +148,7 @@ router.get("/:id", RentalController.getById);
  *     summary: Reservar um filme
  *     description: >
  *       Cria uma locação com status reserved e separa uma cópia do estoque do filme.
- *       O cliente e o filme precisam existir, o cliente não pode ter outra reserva ou
+ *       O cliente e o filme precisam existir e estar ativos, o cliente não pode ter outra reserva ou
  *       aluguel em andamento do mesmo filme e o filme precisa ter cópia no estoque.
  *       A diária é copiada do filme, o total é diária × dias (de 1 a 30) e a reserva
  *       vale por 24 horas. O prazo do aluguel só começa a contar na retirada.
@@ -166,7 +166,7 @@ router.get("/:id", RentalController.getById);
  *             schema:
  *               $ref: '#/components/schemas/Rental'
  *       400:
- *         description: Dados inválidos, cliente ou filme inexistente, filme sem estoque ou reserva/aluguel em andamento do mesmo filme.
+ *         description: Dados inválidos, cliente ou filme inexistente ou inativo, filme sem estoque ou reserva/aluguel em andamento do mesmo filme.
  *         content:
  *           application/json:
  *             schema:
