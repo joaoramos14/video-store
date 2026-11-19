@@ -28,12 +28,12 @@ describe("RentalService - Testes Unitários", () => {
         days: 3,
     };
 
-    function makeCustomer() {
-        return Customer.restore(customerId, "Maria da Silva", "maria@email.com", "52998224725", true);
+    function makeCustomer(active: boolean = true) {
+        return Customer.restore(customerId, "Maria da Silva", "maria@email.com", "52998224725", active);
     }
 
-    function makeMovie(stock: number = 2) {
-        return Movie.restore(movieId, genreId, "Matrix", 1999, 136, 6.5, stock, true);
+    function makeMovie(stock: number = 2, active: boolean = true) {
+        return Movie.restore(movieId, genreId, "Matrix", 1999, 136, 6.5, stock, active);
     }
 
     function makeRental(status: "reserved" | "active" | "returned" | "cancelled" | "expired", reservedUntil: Date) {
@@ -93,6 +93,16 @@ describe("RentalService - Testes Unitários", () => {
         expect(RentalRepository.create).not.toHaveBeenCalled();
     });
 
+    it("não deve reservar para um cliente inativo", async () => {
+        vi.mocked(CustomerRepository.findById).mockResolvedValue(makeCustomer(false));
+
+        await expect(RentalService.create(validData))
+            .rejects.toThrow("O cliente informado está inativo.");
+
+        expect(MovieRepository.findById).not.toHaveBeenCalled();
+        expect(RentalRepository.create).not.toHaveBeenCalled();
+    });
+
     it("deve repassar erros inesperados ao consultar o cliente", async () => {
         vi.mocked(CustomerRepository.findById).mockRejectedValue(new Error("Falha de conexão"));
 
@@ -120,6 +130,17 @@ describe("RentalService - Testes Unitários", () => {
             .rejects.toThrow("Falha de conexão");
 
         expect(RentalRepository.create).not.toHaveBeenCalled();
+    });
+
+    it("não deve reservar um filme inativo", async () => {
+        vi.mocked(CustomerRepository.findById).mockResolvedValue(makeCustomer());
+        vi.mocked(MovieRepository.findById).mockResolvedValue(makeMovie(2, false));
+
+        await expect(RentalService.create(validData))
+            .rejects.toThrow("O filme informado está inativo.");
+
+        expect(RentalRepository.create).not.toHaveBeenCalled();
+        expect(MovieRepository.update).not.toHaveBeenCalled();
     });
 
     it("não deve reservar um filme sem cópias no estoque", async () => {

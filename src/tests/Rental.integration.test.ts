@@ -25,13 +25,14 @@ describe("Rental - Testes de integração", () => {
         return digits.join("");
     }
 
-    async function createCustomer() {
+    async function createCustomer(active: boolean = true) {
         const { data, error } = await supabase
             .from("customers")
             .insert({
                 name: "Cliente teste integração de locações",
                 email: `teste.${randomUUID()}@email.com`,
                 cpf: makeCpf(),
+                active,
             })
             .select()
             .single();
@@ -42,7 +43,7 @@ describe("Rental - Testes de integração", () => {
         return data.id as string;
     }
 
-    async function createMovie(stock: number = 2) {
+    async function createMovie(stock: number = 2, active: boolean = true) {
         const { data, error } = await supabase
             .from("movies")
             .insert({
@@ -52,6 +53,7 @@ describe("Rental - Testes de integração", () => {
                 duration: 120,
                 stock,
                 daily_price: 6.5,
+                active,
             })
             .select()
             .single();
@@ -200,6 +202,31 @@ describe("Rental - Testes de integração", () => {
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("O cliente informado não existe.");
+    });
+
+    it("não deve reservar para um cliente inativo", async () => {
+        const customerId = await createCustomer(false);
+        const movieId = await createMovie();
+
+        const response = await request(app)
+            .post("/rentals")
+            .send({ customer_id: customerId, movie_id: movieId, days: 3 });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("O cliente informado está inativo.");
+        expect(await getMovieStock(movieId)).toBe(2);
+    });
+
+    it("não deve reservar um filme inativo", async () => {
+        const customerId = await createCustomer();
+        const movieId = await createMovie(2, false);
+
+        const response = await request(app)
+            .post("/rentals")
+            .send({ customer_id: customerId, movie_id: movieId, days: 3 });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("O filme informado está inativo.");
     });
 
     it("não deve reservar um filme inexistente", async () => {
