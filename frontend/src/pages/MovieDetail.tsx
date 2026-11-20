@@ -6,7 +6,7 @@ import { LoadError, Loading, MissingCustomer } from "../components/PageState";
 import { backLink, label, sectionTitle } from "../components/ui";
 import { useFlash } from "../hooks/useFlash";
 import { useLoad } from "../hooks/useLoad";
-import { CUSTOMER_ID } from "../hooks/useProfile";
+import { useProfile } from "../hooks/useProfile";
 import { formatDate, formatMoney, formatTime, plural } from "../utils/format";
 import { useTitle } from "../hooks/useTitle";
 
@@ -16,6 +16,7 @@ const RESERVATION_HOURS = 24;
 export function MovieDetail() {
     const { id = "" } = useParams();
     const flash = useFlash();
+    const { customerId } = useProfile();
     const [days, setDays] = useState("3");
     const [sending, setSending] = useState(false);
 
@@ -23,11 +24,11 @@ export function MovieDetail() {
         const movie = await moviesApi.get(id);
         const [genre, rentals] = await Promise.all([
             genresApi.get(movie.genre_id).catch(() => null),
-            CUSTOMER_ID ? customersApi.rentals(CUSTOMER_ID).catch(() => []) : Promise.resolve([]),
+            customerId ? customersApi.rentals(customerId).catch(() => []) : Promise.resolve([]),
         ]);
 
         return { movie, genre, rentals };
-    }, [id]);
+    }, [id, customerId]);
 
     useTitle(data?.movie.title ?? "Filme");
 
@@ -50,12 +51,12 @@ export function MovieDetail() {
     async function reserve(event: FormEvent) {
         event.preventDefault();
 
-        if (!CUSTOMER_ID) return;
+        if (!customerId) return;
 
         setSending(true);
 
         try {
-            await rentalsApi.create({ customer_id: CUSTOMER_ID, movie_id: movie.id, days: Number(days) });
+            await rentalsApi.create({ customer_id: customerId, movie_id: movie.id, days: Number(days) });
             flash.status(`Reserva feita! Retire o filme na loja em até ${RESERVATION_HOURS} horas.`, "/my-rentals");
         } catch (exception) {
             flash.error(errorMessage(exception));
@@ -115,7 +116,7 @@ export function MovieDetail() {
                     <h2 id="alugar-titulo" className={sectionTitle}>Reservar</h2>
                     <div className="bg-[#1b2229] border-x border-b border-[#2c3440] rounded-b-[3px] p-5">
 
-                        {!CUSTOMER_ID && (
+                        {!customerId && (
                             <div className="mb-4">
                                 <MissingCustomer />
                             </div>
@@ -183,7 +184,7 @@ export function MovieDetail() {
 
                                     <button
                                         type="submit"
-                                        disabled={sending || !CUSTOMER_ID}
+                                        disabled={sending || !customerId}
                                         className="px-8 py-2.5 bg-[#53c7ff] hover:bg-[#8fdcff] text-[#14181c] text-xs font-bold uppercase tracking-[0.1em] rounded-[3px] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
                                         Reservar

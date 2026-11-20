@@ -6,6 +6,7 @@ import type { CustomerInput } from "../../api/types";
 import { LoadError, Loading } from "../../components/PageState";
 import { field, fieldError, label } from "../../components/ui";
 import { useFlash } from "../../hooks/useFlash";
+import { useProfile } from "../../hooks/useProfile";
 import { ActiveCheckbox, FormActions, FormPage } from "./AdminPage";
 import { useTitle } from "../../hooks/useTitle";
 
@@ -13,6 +14,7 @@ export function CustomerForm() {
     const { id } = useParams();
     const editing = id !== undefined;
     const flash = useFlash();
+    const { reloadCustomers } = useProfile();
     useTitle(editing ? "Editar cliente" : "Novo cliente");
 
     const [form, setForm] = useState({ name: "", email: "", cpf: "", phone: "", active: true });
@@ -51,9 +53,11 @@ export function CustomerForm() {
         try {
             if (id) {
                 await customersApi.update(id, { ...input, active: form.active });
+                reloadCustomers();
                 flash.status("Cliente atualizado com sucesso!", "/admin/customers");
             } else {
                 await customersApi.create(input);
+                reloadCustomers();
                 flash.status("Cliente cadastrado com sucesso!", "/admin/customers");
             }
         } catch (exception) {

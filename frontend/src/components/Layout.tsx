@@ -5,7 +5,7 @@ import { useProfile } from "../hooks/useProfile";
 export function Layout() {
     const location = useLocation();
     const flash = currentFlash(location.state);
-    const { isAdmin, toggle } = useProfile();
+    const { isAdmin, toggle, customers, customerId, chooseCustomer } = useProfile();
 
     return (
         <>
@@ -28,6 +28,20 @@ export function Layout() {
                         <Link to="/my-rentals" className="text-[#9ab] hover:text-white transition-colors">
                             Meus aluguéis
                         </Link>
+                        {/* Cliente do perfil Usuário: sem login, escolhe-se quem está reservando */}
+                        {customers.length > 0 && (
+                            <select
+                                aria-label="Cliente"
+                                title="Cliente"
+                                value={customerId ?? ""}
+                                onChange={(event) => chooseCustomer(event.target.value)}
+                                className="max-w-[160px] bg-[#2c3440] border border-transparent rounded-[3px] px-2 py-1 text-[12px] font-semibold normal-case tracking-normal text-[#9ab] focus:outline-none focus:border-[#53c7ff] transition-colors"
+                            >
+                                {customers.map((customer) => (
+                                    <option key={customer.id} value={customer.id}>{customer.name}</option>
+                                ))}
+                            </select>
+                        )}
                         {/* Troca de perfil: não há login, então Admin e Usuário são fixos */}
                         <button
                             type="button"

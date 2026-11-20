@@ -6,6 +6,7 @@ import { LoadError, Loading } from "../../components/PageState";
 import { Pagination, pageFrom, paginate } from "../../components/Pagination";
 import { deleteAction, editAction, emptyLink, panel, sectionTitle, tableHead, tableRow } from "../../components/ui";
 import { useFlash } from "../../hooks/useFlash";
+import { useProfile } from "../../hooks/useProfile";
 import { useLoad } from "../../hooks/useLoad";
 import { InactiveBadge, ListHeader } from "./AdminPage";
 import { useTitle } from "../../hooks/useTitle";
@@ -22,6 +23,7 @@ export function Customers() {
     const [search] = useSearchParams();
     const page = pageFrom(search);
     const flash = useFlash();
+    const { reloadCustomers } = useProfile();
 
     const { data, error, loading } = useLoad(() => customersApi.list());
 
@@ -30,6 +32,7 @@ export function Customers() {
 
         try {
             await customersApi.remove(customer.id);
+            reloadCustomers();
             flash.status("Cliente excluído com sucesso!", "/admin/customers");
         } catch (exception) {
             flash.error(errorMessage(exception));

@@ -8,7 +8,7 @@ import { RentalStatusBadge } from "../components/RentalStatusBadge";
 import { emptyLink } from "../components/ui";
 import { useFlash } from "../hooks/useFlash";
 import { useLoad } from "../hooks/useLoad";
-import { CUSTOMER_ID } from "../hooks/useProfile";
+import { useProfile } from "../hooks/useProfile";
 import { formatDate, formatMoney, formatTime, plural } from "../utils/format";
 import { displayStatus, isClosedWithoutPickup } from "../utils/rentalStatus";
 import { useTitle } from "../hooks/useTitle";
@@ -22,16 +22,17 @@ export function MyRentals() {
     const [search] = useSearchParams();
     const page = pageFrom(search);
     const flash = useFlash();
+    const { customerId } = useProfile();
 
     const { data, error, loading } = useLoad(async () => {
-        if (!CUSTOMER_ID) return null;
+        if (!customerId) return null;
 
         // Expira as reservas vencidas antes de listar (o PHP faz isso com uma tarefa agendada).
         await rentalsApi.expireReservations().catch(() => null);
 
-        const [rentals, movies] = await Promise.all([customersApi.rentals(CUSTOMER_ID), moviesApi.list()]);
+        const [rentals, movies] = await Promise.all([customersApi.rentals(customerId), moviesApi.list()]);
         return { rentals, movies };
-    });
+    }, [customerId]);
 
     async function cancel(rental: Rental) {
         if (!window.confirm("Cancelar esta reserva?")) return;
@@ -61,7 +62,7 @@ export function MyRentals() {
                 </span>
             </div>
 
-            {!CUSTOMER_ID ? (
+            {!customerId ? (
                 <div className="mt-6"><MissingCustomer /></div>
             ) : loading && !data ? (
                 <Loading />

@@ -15,8 +15,7 @@ export function LoadError({ message }: { message: string }) {
 export function MissingCustomer() {
     return (
         <div className="px-4 py-3 bg-[#ff5b5b]/10 border border-[#ff5b5b]/40 text-[#ffb3b3] rounded-[3px] text-sm">
-            Nenhum cliente configurado. Informe o ID de um cliente em <code>VITE_CUSTOMER_ID</code> no arquivo{" "}
-            <code>frontend/.env</code> e reinicie o front-end.
+            Nenhum cliente ativo cadastrado. Cadastre um cliente em Admin &rarr; Clientes para poder reservar filmes.
         </div>
     );
 }
