@@ -9,12 +9,14 @@
         "test:watch": "vitest",
         "test:coverage": "vitest run --coverage",
         "dev": "node --watch --env-file=.env --import=tsx/esm src/server.ts",
+        "dev:full": "concurrently --kill-others --names api,front --prefix-colors blue,cyan \"npm run dev\" \"npm --prefix frontend run dev\"",
         "build": "tsc",
         "start": "node --env-file=.env dist/server.js"
     },
     "devDependencies": {
         "@types/express": "^5.0.6",
         "@types/node": "^26.2.0",
+        "concurrently": "^10.0.7",
         "tsx": "^4.23.12",
         "typescript": "^7.0.2"
     },
