@@ -1,7 +1,7 @@
 {
     "name": "movie-rental-api",
     "version": "1.0.0",
-    "description": "API REST em Node.js, TypeScript e Supabase para gerenciar o catalogo de filmes de uma locadora, organizados por gênero.",
+    "description": "API REST em Node.js, TypeScript e Supabase para gerenciar o catálogo, os clientes e as locações de uma locadora de filmes.",
     "type": "module",
     "main": "dist/server.js",
     "scripts": {
