@@ -218,7 +218,7 @@ video-store/
 git clone https://github.com/joaoramos14/video-store.git
 cd video-store
 
-# 2. Instalar as dependências
+# 2. Instalar as dependências (da API e do front-end, em um só comando)
 npm install
 
 # 3. Criar o arquivo de variáveis de ambiente
@@ -671,10 +671,9 @@ A pasta `frontend/` contém uma interface web em React, Vite, TypeScript e Tailw
 
 ```bash
 # na raiz do repositório
+# instala as dependências da API e, em seguida, as do front-end
+# (o script "postinstall" roda "npm --prefix frontend install" automaticamente)
 npm install
-cd frontend
-npm install
-cd ..
 
 # executa a API e o front-end juntos
 npm run dev:full
