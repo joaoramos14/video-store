@@ -11,7 +11,8 @@
         "dev": "node --watch --env-file=.env --import=tsx/esm src/server.ts",
         "dev:full": "concurrently --kill-others --names api,front --prefix-colors blue,cyan \"npm run dev\" \"npm --prefix frontend run dev\"",
         "build": "tsc",
-        "start": "node --env-file=.env dist/server.js"
+        "start": "node --env-file=.env dist/server.js",
+        "postinstall": "npm --prefix frontend install"
     },
     "devDependencies": {
         "@types/express": "^5.0.6",
